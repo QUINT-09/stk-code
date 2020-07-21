@@ -2929,6 +2929,12 @@ void ServerLobby::computeNewRankings()
         double player1_handicap = (   w->getKart(i)->getHandicap()
                                    == HANDICAP_NONE               ) ? 0 : HANDICAP_OFFSET;
 
+        // On a disconnect, increase RD once,
+        // no matter how many opponents
+        if (w->getKart(i)->isEliminated())
+            new_rating_deviations[i] = prev_rating_deviations[i] + 20.0;
+
+        // Loop over all opponents
         for (unsigned j = 0; j < player_count; j++)
         {
             // Don't compare a player with himself
@@ -2956,11 +2962,6 @@ void ServerLobby::computeNewRankings()
             bool handicap_used = w->getKart(i)->getHandicap() || w->getKart(j)->getHandicap();
             double accuracy = computeDataAccuracy(player1_rd, player2_rd, player1_scores, player2_scores, handicap_used);
 
-            // TODO : update rating deviations
-            //        High accuracy makes RD drop more
-            //        The change isn't purely proportional to accuracy,
-            //        it's also more significant when the RD is high.
-
             // Now that we've computed the reliability value,
             // we can proceed with computing the points gained or lost
 
@@ -2972,13 +2973,28 @@ void ServerLobby::computeNewRankings()
             {
                 result = 0.0;
                 player1_time = player2_time; // for getTimeSpread
-                max_time = MAX_SCALING_TIME;
+                const uint32_t id = RaceManager::get()->getKartInfo(i).getOnlineId();
+                // TODO : define a popcount function. std::popcount is C++20 only.
+                int disconnects = 1;//popcount(m_num_ranked_disconnects.at(id));
+                // Bigger penalty for recurring disconnects
+                // TODO : remove code duplication through a function
+                double disconnect_penalty = (disconnects <= 2) ? 0.0 :
+                                            (disconnects >= 8) ? 1.0 :
+                                                                 (disconnects - 2) / 6.0;
+                max_time =   ((1 - disconnect_penalty) * player2_time * 1.2)
+                           + (disconnect_penalty       * MAX_SCALING_TIME);
             }
             else if (w->getKart(j)->isEliminated())
             {
                 result = 1.0;
                 player2_time = player1_time;
-                max_time = MAX_SCALING_TIME;
+                const uint32_t id = RaceManager::get()->getKartInfo(i).getOnlineId();
+                int disconnects = 1;//popcount(m_num_ranked_disconnects.at(id));
+                double disconnect_penalty = (disconnects <= 2) ? 0.0 :
+                                            (disconnects >= 8) ? 1.0 :
+                                                                 (disconnects - 2) / 6.0;
+                max_time =   ((1 - disconnect_penalty) * player2_time * 1.2)
+                           + (disconnect_penalty       * MAX_SCALING_TIME);
             }
             else
             {
@@ -3003,6 +3019,20 @@ void ServerLobby::computeNewRankings()
             // Compute the ranking change
             scores_change[i] +=
                 ranking_importance * (result - expected_result);
+
+            // We now update the rating deviation. The change
+            // depends on the current RD, on the result's accuracy,
+            // on how expected the result was (upsets can increase RD)
+            // and on disconnects
+
+            // If there was a disconnect in this race, RD was handled once already
+            if (!w->getKart(i)->isEliminated()) {
+                double rd_change = accuracy * prev_rating_deviations[i] / 400.0;
+                // TODO : increase RD on upsets
+                // TODO : don't let RD go down as easily if too much disconnects
+                new_rating_deviations[i] += rd_change;
+                // TODO : if after the loop the rd is below minimum, set it to minimum RD
+            }
         }
     }
 
