@@ -2870,7 +2870,7 @@ void ServerLobby::computeNewRankings()
     std::vector<double> prev_scores;
     std::vector<double> new_rating_deviations;
     std::vector<double> prev_rating_deviations;
-    std::vector<uint64_t> prev_disconnects;
+    std::vector<int64_t> prev_disconnects;
 
     World* w = World::getWorld();
     assert(w);

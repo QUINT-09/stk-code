@@ -205,7 +205,7 @@ private:
     std::map<uint32_t, double> m_max_scores;
 
     /** Number of disconnects in the previous 64 ranked races for each current players */
-    std::map<uint32_t, uint64_t> m_num_ranked_disconnects; // TODO Initialized to 0 for a new player on 1st connection to a ranked server
+    std::map<uint32_t, int64_t> m_num_ranked_disconnects; // TODO Initialized to 0 for a new player on 1st connection to a ranked server
 
     /** Number of ranked races done for each current players */
     std::map<uint32_t, unsigned> m_num_ranked_races;
