@@ -199,7 +199,9 @@ private:
     /** The rating uncertainty for each current player */
     std::map<uint32_t, double> m_rating_deviations;
 
-    /** The maximum ranking scores achieved for each current player */
+    /** The maximum reliable ranking scores achieved for each current player.
+        This is not the same as the maximum raw ranking points,
+        because a very high rating with very high RD is most likely lucky. */
     std::map<uint32_t, double> m_max_scores;
 
     /** Number of disconnects in the previous 64 ranked races for each current players */
@@ -328,6 +330,7 @@ private:
     double getUncertaintySpread(uint32_t online_id);
     double scalingValueForTime(double time);
     double computeH2HResult(double player1_time, double player2_time);
+    double computeDisconnectPenalty(int player_number);
     double computeDataAccuracy(double player1_rd, double player2_rd, double player1_scores, double player2_scores, bool handicap_used);
     void checkRaceFinished();
     void getHitCaptureLimit();
