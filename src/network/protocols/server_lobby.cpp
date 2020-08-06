@@ -3005,8 +3005,7 @@ void ServerLobby::computeNewRankings()
                 max_time = std::min(std::max(player1_time, player2_time), MAX_SCALING_TIME);
             }
 
-            ranking_importance = accuracy * mode_factor *
-                scalingValueForTime(max_time);
+            ranking_importance = accuracy * mode_factor * scalingValueForTime(max_time);
 
             // Compute the expected result using an ELO-like function
             diff = player2_scores - player1_scores;
@@ -3017,8 +3016,7 @@ void ServerLobby::computeNewRankings()
                         * getTimeSpread(std::min(player1_time, player2_time)))));
 
             // Compute the ranking change
-            scores_change[i] +=
-                ranking_importance * (result - expected_result);
+            scores_change[i] += ranking_importance * (result - expected_result);
 
             // We now update the rating deviation. The change
             // depends on the current RD, on the result's accuracy,
@@ -3027,7 +3025,7 @@ void ServerLobby::computeNewRankings()
             // If there was a disconnect in this race, RD was handled once already
             if (!w->getKart(i)->isEliminated()) {
                 // First the RD reduction based on accuracy and current RD
-                double rd_change_factor = accuracy * 0.0025;
+                double rd_change_factor = accuracy * 0.0020;
                 double rd_change = (-1) * prev_rating_deviations[i] * rd_change_factor;
 
                 // If the unexpected result happened, we add a RD increase
@@ -3122,7 +3120,7 @@ double ServerLobby::getTimeSpread(double time)
  */
 double ServerLobby::scalingValueForTime(double time)
 {
-    return time * MAX_POINTS_PER_SECOND;
+    return time * BASE_POINTS_PER_SECOND;
 }   // scalingValueForTime
 
 //-----------------------------------------------------------------------------
@@ -3196,7 +3194,7 @@ double ServerLobby::computeDisconnectPenalty(int player_number)
  */
 double ServerLobby::computeDataAccuracy(double player1_rd, double player2_rd, double player1_scores, double player2_scores, bool handicap_used)
 {
-    double accuracy = player1_rd / player2_rd;
+    double accuracy = player1_rd / (sqrt(player2_rd) * sqrt(MIN_RATING_DEVIATION));
 
     double strong_lowerbound = (player1_scores > player2_scores) ? player1_scores - 3 * player1_rd
                                                                  : player2_scores - 3 * player2_rd;
@@ -3211,7 +3209,7 @@ double ServerLobby::computeDataAccuracy(double player1_rd, double player2_rd, do
         double expected_result = 1.0/ (1.0 + std::pow(10.0, diff));
         // Renormalize so expected result 50% is 1.0 and expected result 100% is 0.0
         expected_result = 2.0 - 2 * expected_result;
-        expected_result = std::max(0.1, expected_result);
+        expected_result = std::max(0.2, sqrt(expected_result));
 
         accuracy *= expected_result;
     }

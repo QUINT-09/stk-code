@@ -183,12 +183,12 @@ private:
 
     /* Ranking related variables */
     // If updating the base points, update the base points distribution in DB
-    const double BASE_RANKING_POINTS   = 4000.0; // TODO Given to a new player on 1st connection to a ranked server
-    const double BASE_RATING_DEVIATION = 1000.0; // TODO Given to a new player on 1st connection to a ranked server
-    const double MIN_RATING_DEVIATION  = 100.0; // TODO RD should go up if a player is inactive
-    const double MAX_SCALING_TIME      = 500.0;
-    const double MAX_POINTS_PER_SECOND = 0.125;
-    const double HANDICAP_OFFSET       = 2000.0;
+    const double BASE_RANKING_POINTS    = 4000.0; // TODO Given to a new player on 1st connection to a ranked server
+    const double BASE_RATING_DEVIATION  = 1000.0; // TODO Given to a new player on 1st connection to a ranked server
+    const double MIN_RATING_DEVIATION   = 100.0; // TODO RD should go up if a player is inactive
+    const double MAX_SCALING_TIME       = 360.0;
+    const double BASE_POINTS_PER_SECOND = 0.18;
+    const double HANDICAP_OFFSET        = 2000.0;
 
     /** Online id to profile map, handling disconnection in ranked server */
     std::map<uint32_t, std::weak_ptr<NetworkPlayerProfile> > m_ranked_players;
