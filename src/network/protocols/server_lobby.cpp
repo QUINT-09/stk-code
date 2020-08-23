@@ -3025,10 +3025,14 @@ void ServerLobby::computeNewRankings()
             // If there was a disconnect in this race, RD was handled once already
             if (!w->getKart(i)->isEliminated()) {
                 // First the RD reduction based on accuracy and current RD
-                double rd_change_factor = accuracy * 0.0020;
+                double rd_change_factor = accuracy * 0.0016;
                 double rd_change = (-1) * prev_rating_deviations[i] * rd_change_factor;
 
                 // If the unexpected result happened, we add a RD increase
+                // TODO : more reliable would be accumulating an expected_result/result
+                // differential over time, weighted through relative RDs.
+                // If that differential goes high, then increase RD while decaying
+                // the differential. Some work needed to ensure sensible maths.
                 double upset = std::abs(result - expected_result);
                 if (upset > 0.5)
                 {
@@ -3084,7 +3088,7 @@ double ServerLobby::getModeFactor()
 {
     if (RaceManager::get()->isTimeTrialMode())
         return 1.0;
-    return 0.7;
+    return 0.75;
 }   // getModeFactor
 
 //-----------------------------------------------------------------------------
