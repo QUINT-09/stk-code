@@ -16,7 +16,7 @@ jobs:
       matrix:
         #arch: [i686, x86_64, armv7, aarch64]
         #os: [windows-latest, ubuntu-latest]
-        arch: [x86_64]
+        arch: [i686, x86_64, armv7, aarch64]
         os: [windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
