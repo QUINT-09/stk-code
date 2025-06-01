@@ -183,32 +183,33 @@ jobs:
     steps:
       - name: Configure packaging name for git master branch
         shell : bash
-        if: ${{ github.ref == 'refs/heads/master' }}
+        # if: ${{ github.ref == 'refs/heads/master' }}
+        if: ${{ 1 == 1 }}
         run: |
           echo "release_tag=git`date +%Y%m%d`" >> $GITHUB_ENV
           echo "release_name=preview" >> $GITHUB_ENV
-      - name: Configure packaging name for tag
-        shell : bash
-        if: ${{ startsWith(github.ref, 'refs/tags/') }}
-        run: |
-          echo "release_tag=`basename $GITHUB_REF`" >> $GITHUB_ENV
-          echo "release_name=`basename $GITHUB_REF`" >> $GITHUB_ENV
+      # - name: Configure packaging name for tag
+      #   shell : bash
+      #   if: ${{ startsWith(github.ref, 'refs/tags/') }}
+      #   run: |
+      #     echo "release_tag=`basename $GITHUB_REF`" >> $GITHUB_ENV
+      #     echo "release_name=`basename $GITHUB_REF`" >> $GITHUB_ENV
       # - name: Configure packaging name for non-releasing branch
       #   shell : bash
       #   if: ${{ (github.ref != 'refs/heads/master' && !startsWith(github.ref, 'refs/tags/')) || github.repository_owner != 'supertuxkart' }}
       #   run: |
       #     echo "release_tag=" >> $GITHUB_ENV
       #     echo "release_name=" >> $GITHUB_ENV
-      - name: Check for prerelease
-        shell : bash
-        if: ${{ github.ref == 'refs/heads/master' || contains(github.ref, 'rc') || contains(github.ref, 'beta') }}
-        run: |
-          echo "release_pre=true" >> $GITHUB_ENV
-      - name: Check for non-prerelease
-        shell : bash
-        if: ${{ github.ref != 'refs/heads/master' && !contains(github.ref, 'rc') && !contains(github.ref, 'beta') }}
-        run: |
-          echo "release_pre=false" >> $GITHUB_ENV
+      # - name: Check for prerelease
+      #   shell : bash
+      #   if: ${{ github.ref == 'refs/heads/master' || contains(github.ref, 'rc') || contains(github.ref, 'beta') }}
+      #   run: |
+      #     echo "release_pre=true" >> $GITHUB_ENV
+      # - name: Check for non-prerelease
+      #   shell : bash
+      #   if: ${{ github.ref != 'refs/heads/master' && !contains(github.ref, 'rc') && !contains(github.ref, 'beta') }}
+      #   run: |
+      #     echo "release_pre=false" >> $GITHUB_ENV
       - name: Show packaging name
         shell : bash
         run : |
