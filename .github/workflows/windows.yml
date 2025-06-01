@@ -193,12 +193,12 @@ jobs:
         run: |
           echo "release_tag=`basename $GITHUB_REF`" >> $GITHUB_ENV
           echo "release_name=`basename $GITHUB_REF`" >> $GITHUB_ENV
-      - name: Configure packaging name for non-releasing branch
-        shell : bash
-        if: ${{ (github.ref != 'refs/heads/master' && !startsWith(github.ref, 'refs/tags/')) || github.repository_owner != 'supertuxkart' }}
-        run: |
-          echo "release_tag=" >> $GITHUB_ENV
-          echo "release_name=" >> $GITHUB_ENV
+      # - name: Configure packaging name for non-releasing branch
+      #   shell : bash
+      #   if: ${{ (github.ref != 'refs/heads/master' && !startsWith(github.ref, 'refs/tags/')) || github.repository_owner != 'supertuxkart' }}
+      #   run: |
+      #     echo "release_tag=" >> $GITHUB_ENV
+      #     echo "release_name=" >> $GITHUB_ENV
       - name: Check for prerelease
         shell : bash
         if: ${{ github.ref == 'refs/heads/master' || contains(github.ref, 'rc') || contains(github.ref, 'beta') }}
