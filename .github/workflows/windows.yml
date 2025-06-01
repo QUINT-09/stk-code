@@ -1,8 +1,9 @@
 name: windows
-on:
+on: 
   push:
     branches:
       - master
+      - BalanceSTK2
     tags:
       - '*'
   pull_request: {}
@@ -13,11 +14,10 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        arch: [i686, x86_64, armv7, aarch64]
-        os: [windows-latest, ubuntu-latest]
-        exclude:
-          - arch: armv7
-            os: windows-latest
+        #arch: [i686, x86_64, armv7, aarch64]
+        #os: [windows-latest, ubuntu-latest]
+        arch: [x86_64]
+        os: [windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
