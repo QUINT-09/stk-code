@@ -158,14 +158,14 @@ jobs:
           path: build/bin/*
       - name: Upload stk-code/data
         # We only need to upload stk-code/data once
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.arch == 'i686'}}
+        if: ${{ matrix.os == 'windows-latest' && matrix.arch == 'x86_64'}}
         uses: actions/upload-artifact@v4
         with:
           name: data
           path: data
       - name: Upload stk-code/tools
         # We only need to upload stk-code/tools once
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.arch == 'i686'}}
+        if: ${{ matrix.os == 'windows-latest' && matrix.arch == 'x86_64'}}
         uses: actions/upload-artifact@v4
         with:
           name: tools
