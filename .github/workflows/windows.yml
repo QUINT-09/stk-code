@@ -248,14 +248,14 @@ jobs:
           mv data SuperTuxKart-${{ env.release_tag }}-win/stk-code
           ls
           mv tools/run_game.bat SuperTuxKart-${{ env.release_tag }}-win
-          mkdir SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-i686
+          # mkdir SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-i686
           mkdir SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-x86_64
-          mkdir SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-armv7
-          mkdir SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-aarch64
-          mv i686 SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-i686/bin
+          # mkdir SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-armv7
+          # mkdir SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-aarch64
+          # mv i686 SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-i686/bin
           mv x86_64 SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-x86_64/bin
-          mv armv7 SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-armv7/bin
-          mv aarch64 SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-aarch64/bin
+          # mv armv7 SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-armv7/bin
+          # mv aarch64 SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-aarch64/bin
           # libwinpthread-1.dll is useless because we statically link
           rm -f SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-armv7/bin/libwinpthread-1.dll
           rm -f SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-aarch64/bin/libwinpthread-1.dll
@@ -270,7 +270,8 @@ jobs:
         run: |
           mv tools SuperTuxKart-${{ env.release_tag }}-win/stk-code
           cd SuperTuxKart-${{ env.release_tag }}-win/stk-code/tools/windows_installer
-          for arch in i686 x86_64 aarch64
+          # for arch in i686 x86_64 aarch64
+          for arch in x86_64
           do
             cp supertuxkart-github-actions.nsi $arch.nsi
             sed -i "s/define APPNAMEANDVERSION \"\"/define APPNAMEANDVERSION \"SuperTuxKart ${{ env.release_tag }}\"/g" $arch.nsi
