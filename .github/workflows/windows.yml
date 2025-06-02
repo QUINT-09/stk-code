@@ -235,14 +235,18 @@ jobs:
           mkdir stk-assets
           cd stk-assets
           unzip ..\stk-assets-full.zip
+          ls
       - name: Move folders
         shell : bash
         if: ${{ env.release_tag != '' }}
         run: |
+          ls
           mkdir SuperTuxKart-${{ env.release_tag }}-win
           mv stk-assets SuperTuxKart-${{ env.release_tag }}-win
           mkdir SuperTuxKart-${{ env.release_tag }}-win/stk-code
+          ls
           mv data SuperTuxKart-${{ env.release_tag }}-win/stk-code
+          ls
           mv tools/run_game.bat SuperTuxKart-${{ env.release_tag }}-win
           mkdir SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-i686
           mkdir SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-x86_64
@@ -255,6 +259,7 @@ jobs:
           # libwinpthread-1.dll is useless because we statically link
           rm -f SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-armv7/bin/libwinpthread-1.dll
           rm -f SuperTuxKart-${{ env.release_tag }}-win/stk-code/build-aarch64/bin/libwinpthread-1.dll
+          ls
       - name: Start packaging STK
         if: ${{ env.release_tag != '' }}
         run: |
